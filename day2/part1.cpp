@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <sstream>
 #include <unordered_map>
 
 // first row A: Rock | B: Paper | C: Scissors

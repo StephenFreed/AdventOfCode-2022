@@ -53,47 +53,49 @@ void GetEachDirTotalSize(std::unordered_map<std::string, int>& dir_totals) {
     std::string current_line;
     std::ifstream input_file;
     input_file.open("input_file");
-    while (std::getline(input_file, current_line)) {
+    if (input_file.is_open()) {
+        while (std::getline(input_file, current_line)) {
 
-        // gets idx to parse first section of line
-        int first_section_idx = current_line.find(' ');
-        std::string first_section = current_line.substr(0,first_section_idx);
+            // gets idx to parse first section of line
+            int first_section_idx = current_line.find(' ');
+            std::string first_section = current_line.substr(0,first_section_idx);
 
-        // effectively keeps track of current_directory for else statement
-        if (first_section == "$") {
+            // effectively keeps track of current_directory for else statement
+            if (first_section == "$") {
 
-            // gets idx to parse second section of line
-            std::string second_section = current_line.substr(first_section_idx + 1, 2);
-            
-            // if cd add to current_path string
-            if (second_section  == "cd") {
+                // gets idx to parse second section of line
+                std::string second_section = current_line.substr(first_section_idx + 1, 2);
+                
+                // if cd add to current_path string
+                if (second_section  == "cd") {
 
-                // gets idx to parse third section of line
-                int second_section_idx = current_line.find(' ', first_section_idx + 1);
-                // int third_section_idx = current_line.find(' ', second_section_idx + 1);
-                std::string third_section = current_line.substr(second_section_idx + 1);
+                    // gets idx to parse third section of line
+                    int second_section_idx = current_line.find(' ', first_section_idx + 1);
+                    // int third_section_idx = current_line.find(' ', second_section_idx + 1);
+                    std::string third_section = current_line.substr(second_section_idx + 1);
 
-                // removes the last director if "cd .." | adds if "cd <dir>"
-                if (third_section == "..") {
-                    int last_dir_in_path_idx = current_path.find_last_of('/');
-                    current_path = current_path.substr(0, last_dir_in_path_idx);
-                    if (current_path.empty()) {
-                        current_path = "/";
+                    // removes the last director if "cd .." | adds if "cd <dir>"
+                    if (third_section == "..") {
+                        int last_dir_in_path_idx = current_path.find_last_of('/');
+                        current_path = current_path.substr(0, last_dir_in_path_idx);
+                        if (current_path.empty()) {
+                            current_path = "/";
+                        }
                     }
-                }
-                else {
-                    std::string add_dir = "/" + third_section;
-                    current_path+=add_dir;
-                }
+                    else {
+                        std::string add_dir = "/" + third_section;
+                        current_path+=add_dir;
+                    }
 
+                }
+            }
+            // if not "cd" or "dir" command | adds to dir value in map
+            else if (first_section != "dir") {
+                // uses current path as key | adds section one to value
+                dir_totals[current_path]+= stoi(first_section);
             }
         }
-        // if not "cd" or "dir" command | adds to dir value in map
-        else if (first_section != "dir") {
-            // uses current path as key | adds section one to value
-            dir_totals[current_path]+= stoi(first_section);
-        }
-
+        input_file.close();
     }
 }
 

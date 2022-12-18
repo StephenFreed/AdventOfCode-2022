@@ -3,7 +3,7 @@
 #### Trying to become proficient with C++. Hopefully the code gets cleaner as the days go on!
 
 
-#### Day 1: Calorie Counting
+#### [Day 1](day01/): Calorie Counting
 - My Part One Answer: 71506
 - My Part Two Answer: 209603
 
